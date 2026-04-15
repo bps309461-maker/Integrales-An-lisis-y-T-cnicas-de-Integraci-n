@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrales - Laboratorio Completo de Cálculo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #ec4899;
+      --accent: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #06b6d4;
+      --bg-primary: #0f0f1a;
+      --bg-secondary: #16162a;
+      --bg-tertiary: #1e1e3f;
+      --bg-card: rgba(30, 30, 63, 0.6);
+      --bg-hover: rgba(99, 102, 241, 0.1);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-medium: rgba(255, 255, 255, 0.1);
+      --border-strong: rgba(99, 102, 241, 0.3);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-accent: #818cf8;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --transition-base: 0.3s ease;
+      --transition-slow: 0.5s ease;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: -2;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 1400px;
+      z-index: 1000;
+      background: rgba(15, 15, 26, 0.9);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-xl);
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+    }
+    .logo i { font-size: 2rem; color: var(--primary-light); }
+    .nav-menu { display: flex; gap: 0.5rem; list-style: none; }
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius-lg);
+      transition: var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    .nav-menu a:hover, .nav-menu a.active { color: var(--text-primary); background: var(--bg-hover); }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 2rem 4rem;
+    }
+    .hero-content { max-width: 1000px; text-align: center; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.1));
+      border: 1px solid var(--border-strong);
+      padding: 0.8rem 2rem;
+      border-radius: var(--radius-xl);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hero h1 { font-size: clamp(3rem, 7vw, 5rem); line-height: 1.1; margin-bottom: 2rem; font-weight: 700; }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-description {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.9;
+    }
+    .cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 1.1rem 2.3rem;
+      border-radius: var(--radius-xl);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition-base);
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+    .btn-secondary { background: transparent; color: var(--text-secondary); border: 2px solid var(--border-medium); }
+    .btn-secondary:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--primary); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+    .section { padding: 8rem 0; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-tag {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      background: var(--bg-hover);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      color: var(--primary-light);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+    }
+    .section h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+    .section-subtitle { color: var(--text-secondary); font-size: 1.2rem; max-width: 760px; margin: 0 auto; }
+    
+    .theory-content {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .theory-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      opacity: 0.6;
+    }
+    .theory-content h3 {
+      font-size: 2rem;
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-strong);
+    }
+    .theory-content h3 i { color: var(--primary-light); }
+    .theory-content p { color: var(--text-secondary); margin-bottom: 1.2rem; font-size: 1.05rem; line-height: 1.9; }
+    
+    .math-formula {
+      background: linear-gradient(135deg, var(--bg-tertiary), rgba(99, 102, 241, 0.1));
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      margin: 2.5rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      color: var(--text-accent);
+      text-align: center;
+      position: relative;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .math-formula::before {
+      content: 'FÓRMULA';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 0.25rem 0.9rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .math-formula.important { 
+      border-color: var(--warning); 
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+    }
+    .math-formula.important::before { background: var(--warning); content: 'IMPORTANTE'; }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 2.5rem 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .data-table th {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      text-align: left;
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .data-table td {
+      padding: 1.2rem 1.5rem;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.2s;
+    }
+    .data-table tr:hover td { background: rgba(99, 102, 241, 0.05); }
+    .data-table tr:last-child td { border-bottom: none; }
+    
+    .exercise-card { 
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .exercise-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .exercise-header {
+      background: linear-gradient(135deg, var(--bg-tertiary), rgba(99, 102, 241, 0.1));
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .exercise-number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+    .exercise-header h3 { 
+      flex: 1; 
+      font-size: 1.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-primary);
+    }
+    .exercise-header .difficulty { 
+      padding: 0.5rem 1rem; 
+      border-radius: 20px; 
+      font-size: 0.85rem; 
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .difficulty.basic { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .difficulty.medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .difficulty.hard { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .exercise-body { padding: 2rem; }
+    .problem-statement {
+      background: var(--bg-tertiary);
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+    }
+    .solution-steps { margin-top: 1.5rem; }
+    .step {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.5rem 1.5rem 4.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .step-number {
+      position: absolute;
+      left: 1.2rem;
+      top: 1.2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    
+    .result-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .result-box.error { border-color: var(--danger); background: linear-gradient(135deg, rgba(239,68,68,.1), rgba(239,68,68,.04)); }
+    .result-label { color: var(--text-secondary); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .result-value { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 1.5rem; font-weight: 700; }
+    .result-box.error .result-value { color: var(--danger); }
+    .note-box {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+    }
+    .note-box i { color: var(--primary-light); font-size: 1.5rem; margin-top: 0.2rem; }
+    
+    .canvas-container {
+      position: relative;
+      background:
+        radial-gradient(circle at top left, rgba(99, 102, 241, 0.2), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.15), transparent 35%),
+        linear-gradient(180deg, rgba(18, 24, 53, 0.98), rgba(10, 14, 30, 1));
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 2rem 0;
+      border: 1px solid rgba(129, 140, 248, 0.25);
+      box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,0.05), 
+        0 20px 40px rgba(0,0,0,0.3),
+        0 0 0 1px rgba(99, 102, 241, 0.1);
+    }
+    .canvas-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    canvas { display: block; width: 100%; height: 320px; }
+    .canvas-overlay {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(11, 18, 40, 0.95);
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #dbe7ff;
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    
+    .graph-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin: 2.5rem 0;
+      align-items: stretch;
+    }
+    .graph-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid rgba(129, 140, 248, 0.2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+    }
+    .graph-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), transparent 40%, rgba(16, 185, 129, 0.05));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .graph-card:hover { 
+      transform: translateY(-8px) scale(1.01); 
+      border-color: rgba(129, 140, 248, 0.5); 
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    .graph-card:hover::before { opacity: 1; }
+    .graph-card .canvas-container {
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      flex: 1;
+      min-height: 320px;
+    }
+    .graph-card canvas { height: 320px; }
+    .graph-caption {
+      padding: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.2);
+    }
+    .graph-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary-light);
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+    .graph-kicker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), var(--info));
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+    }
+    .graph-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(129, 140, 248, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 2rem 0 0;
+    }
+    .graph-panel p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    
+    .interactive-controls {
+      display: flex;
+      gap: 1.5rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      padding: 1.5rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .control-group { 
+      display: flex; 
+      align-items: center; 
+      gap: 1rem; 
+      flex: 1; 
+      min-width: 220px; 
+    }
+    .control-group label { 
+      font-weight: 600; 
+      color: var(--text-primary); 
+      min-width: 70px;
+      font-size: 0.95rem;
+    }
+    .control-group span { 
+      font-family: 'JetBrains Mono', monospace; 
+      color: var(--primary-light); 
+      font-weight: 700; 
+      min-width: 50px;
+      font-size: 1.1rem;
+    }
+    input[type="range"] { 
+      flex: 1; 
+      height: 8px; 
+      border-radius: 4px; 
+      background: var(--bg-primary); 
+      outline: none; 
+      -webkit-appearance: none;
+      border: 1px solid var(--border-subtle);
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      cursor: pointer;
+      border: 3px solid var(--bg-primary);
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.5);
+    }
+    
+    .content-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 3rem; 
+      align-items: start; 
+    }
+    
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+    .js-enhanced .reveal { 
+      opacity: 0; 
+      transform: translateY(30px); 
+      transition: opacity 0.8s ease, transform 0.8s ease; 
+    }
+    .js-enhanced .reveal.is-visible { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+    
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      padding: 5rem 2rem 3rem;
+      margin-top: 6rem;
+    }
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+    }
+    .footer-section h4 { color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+    .footer-section p { color: var(--text-secondary); line-height: 1.8; }
+    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid var(--border-subtle); color: var(--text-muted); }
+    
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+    .method-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease;
+    }
+    .method-category:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+    }
+    .method-category h4 {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .method-category h4 i {
+      color: var(--primary-light);
+      font-size: 1.2rem;
+    }
+    
+    @media (max-width: 1200px) { 
+      .content-grid { grid-template-columns: 1fr; } 
+      .methods-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-menu { display: none; }
+      .hero h1 { font-size: 2.5rem; }
+      .theory-content { padding: 1.5rem; }
+      .exercise-body { padding: 1.5rem; }
+      .step { padding-left: 4rem; }
+      canvas { height: 280px; }
+      .graph-grid { grid-template-columns: 1fr; }
+      .graph-card .canvas-container { min-height: 280px; }
+      .graph-card canvas { height: 280px; }
+      .canvas-overlay { 
+        position: relative; 
+        margin: 1rem; 
+        top: auto; 
+        right: auto;
+        display: inline-block;
+      }
+      .methods-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <i class="fas fa-infinity"></i>
+        Integrales
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#conceptos" class="active"><i class="fas fa-book"></i> Conceptos</a></li>
+        <li><a href="#metodos"><i class="fas fa-tools"></i> Métodos</a></li>
+        <li><a href="#ejercicios"><i class="fas fa-calculator"></i> Ejercicios</a></li>
+        <li><a href="#aplicaciones"><i class="fas fa-rocket"></i> Aplicaciones</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-graduation-cap"></i>
+          Curso Completo de Cálculo Integral
+        </div>
+        <h1>
+          <span class="gradient-text">Integrales</span><br>
+          Análisis y Técnicas de Integración
+        </h1>
+        <p class="hero-description">
+          Exploración sistemática del cálculo integral: fundamentos teóricos, métodos de integración 
+          y aplicaciones. Desde la definición de integral definida como límite de sumas de Riemann 
+          hasta técnicas avanzadas como sustitución trigonométrica y fracciones parciales.
+        </p>
+        <div class="cta-group">
+          <a href="#conceptos" class="btn btn-primary">
+            <i class="fas fa-play-circle"></i> Comenzar
+          </a>
+          <a href="#ejercicios" class="btn btn-secondary">
+            <i class="fas fa-list-ol"></i> Ejercicios
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="conceptos" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Fundamentos Teóricos</span>
+          <h2>Conceptos Fundamentales</h2>
+          <p class="section-subtitle">
+            Construcción rigurosa del cálculo integral: definiciones formales, teoremas fundamentales 
+            y propiedades operativas esenciales para el análisis matemático.
+          </p>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-star"></i> El Teorema Fundamental del Cálculo</h3>
+          <p>
+            El <strong>Teorema Fundamental del Cálculo</strong> establece la relación inversa entre 
+            derivación e integración, permitiendo evaluar integrales definidas mediante antiderivadas. 
+            Constituye el puente entre el cálculo diferencial e integral.
+          </p>
+          <p>
+            <strong>Parte 1:</strong> Si \(f\) es continua en \([a,b]\), entonces la función 
+            \(F(x) = \int_a^x f(t)\,dt\) es continua en \([a,b]\), diferenciable en \((a,b)\), y 
+            \(F'(x) = f(x)\). Esto demuestra que toda función continua admite una antiderivada.
+          </p>
+          <div class="math-formula important">
+            <strong>Teorema Fundamental (Parte 2):</strong><br><br>
+            Si \(f\) es continua en \([a,b]\) y \(F' = f\), entonces:
+            \[\int_a^b f(x)\,dx = F(b) - F(a) = \left[F(x)\right]_a^b\]
+          </div>
+          <p>
+            Esta segunda parte transforma el problema de calcular límites de sumas de Riemann 
+            en la evaluación algebraica de una antiderivada en los extremos del intervalo, 
+            simplificando radicalmente los cálculos de áreas, volúmenes y centroides.
+          </p>
+          <div class="solution-steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <h5>Identificación de la antiderivada</h5>
+              <p>Para \(\int_1^3 x^2\,dx\), reconocemos que \(\frac{d}{dx}\left(\frac{x^3}{3}\right) = x^2\). 
+              Por tanto, \(F(x) = \frac{x^3}{3}\) es una antiderivada válida.</p>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <h5>Aplicación del Teorema</h5>
+              <p>Evaluamos: \(\left[\frac{x^3}{3}\right]_1^3 = \frac{27}{3} - \frac{1}{3} = \frac{26}{3}\). 
+              Este valor representa el área exacta bajo la parábola \(y = x^2\) en \([1,3]\).</p>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <h5>Verificación geométrica</h5>
+              <p>El resultado \(\frac{26}{3} \approx 8.667\) unidades cuadradas corresponde al área 
+              del trapecio curvilíneo limitado por \(y=x^2\), el eje \(x\) y las rectas \(x=1\), \(x=3\).</p>
+            </div>
+          </div>
+          <div class="result-box">
+            <span class="result-label">Resultado Exacto</span>
+            <span class="result-value">\(\int_1^3 x^2 \, dx = \frac{26}{3}\)</span>
+          </div>
+          <div class="note-box">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+              <strong>Interpretación física:</strong> Si \(f(x)\) representa la velocidad de una partícula, 
+              la integral \(\int_a^b f(x)\,dx\) calcula el desplazamiento neto entre los instantes \(a\) y \(b\).
+            </div>
+          </div>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-ftc-area" data-graph="ftc-area"></canvas>
+                <div class="canvas-overlay">Área bajo \(y=x^2\) entre 1 y 3</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Visualización</div>
+                La región sombreada representa la integral definida. La animación muestra el proceso 
+                de acumulación del área desde \(x=1\) hasta \(x=3\).
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-ftc-accumulation" data-graph="ftc-accumulation"></canvas>
+                <div class="canvas-overlay">Función acumulada \(A(x)=\int_0^x t^2dt\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Acumulación</div>
+                La función de área acumulada \(A(x) = \frac{x^3}{3}\) crece con rapidez cúbica, 
+                reflejando que la función original \(f(t)=t^2\) es positiva y creciente.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-chart-area"></i> La Integral Definida como Límite de Sumas</h3>
+          <p>
+            La construcción formal de la integral definida se fundamenta en el concepto de 
+            <strong>sumas de Riemann</strong>. Dada una función \(f\) acotada en \([a,b]\), 
+            consideramos una partición \(P = \{x_0, x_1, ..., x_n\}\) donde \(a = x_0 < x_1 < ... < x_n = b\).
+          </p>
+          <p>
+            Definimos \(\Delta x_i = x_i - x_{i-1}\) y seleccionamos puntos muestra \(x_i^* \in [x_{i-1}, x_i]\). 
+            La suma de Riemann correspondiente es \(S(P,f) = \sum_{i=1}^n f(x_i^*)\Delta x_i\), que aproxima 
+            el área bajo la curva mediante rectángulos de altura \(f(x_i^*)\) y ancho \(\Delta x_i\).
+          </p>
+          <div class="math-formula">
+            \[\int_a^b f(x)\,dx = \lim_{\|P\| \to 0}\sum_{i=1}^n f(x_i^*)\Delta x_i\]
+          </div>
+          <p>
+            donde \(\|P\| = \max\{\Delta x_i\}\) es la norma de la partición. El límite existe si \(f\) es 
+            integrable Riemann en \([a,b]\), condición garantizada cuando \(f\) es continua o tiene 
+            discontinuidades de salto finitas.
+          </p>
+          <div class="note-box">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              <strong>Criterios de integrabilidad:</strong> Toda función continua en \([a,b]\) es integrable Riemann. 
+              También lo son las funciones monótonas y las con número finito de discontinuidades de salto.
+            </div>
+          </div>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-riemann" data-graph="riemann"></canvas>
+                <div class="canvas-overlay">Rectángulos de Riemann sobre \(f(x)=\sin(x)+1.2\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Aproximación</div>
+                Al aumentar el número de rectángulos, la suma de áreas converge hacia el valor exacto 
+                de la integral, ilustrando visualmente la definición como límite.
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-even-odd" data-graph="even-odd"></canvas>
+                <div class="canvas-overlay">Simetría par e impar</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Simetría</div>
+                Las funciones pares (\(f(-x)=f(x)\)) duplican el área calculada en \([0,a]\), mientras que 
+                las impares (\(f(-x)=-f(x)\)) producen cancelación total en \([-a,a]\).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-list-check"></i> Propiedades Fundamentales de la Integral</h3>
+          <p>
+            La integral definida satisface propiedades algebraicas y geométricas que facilitan su cálculo 
+            e interpretación. Estas propiedades derivan directamente de la definición como límite de sumas.
+          </p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Propiedad</th>
+                <th>Expresión Matemática</th>
+                <th>Interpretación Geométrica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Linealidad (Aditividad)</strong></td>
+                <td>\(\int_a^b[f(x)+g(x)]\,dx = \int_a^b f(x)\,dx + \int_a^b g(x)\,dx\)</td>
+                <td>El área bajo la suma es la suma de áreas</td>
+              </tr>
+              <tr>
+                <td><strong>Homogeneidad</strong></td>
+                <td>\(\int_a^b c\cdot f(x)\,dx = c\int_a^b f(x)\,dx\), \(c \in \mathbb{R}\)</td>
+                <td>Escalamiento vertical de la región</td>
+              </tr>
+              <tr>
+                <td><strong>Aditividad respecto al intervalo</strong></td>
+                <td>\(\int_a^c f(x)\,dx = \int_a^b f(x)\,dx + \int_b^c f(x)\,dx\)</td>
+                <td>Partición del área total en subregiones</td>
+              </tr>
+              <tr>
+                <td><strong>Función par</strong></td>
+                <td>\(\int_{-a}^a f(x)\,dx = 2\int_0^a f(x)\,dx\) si \(f(-x)=f(x)\)</td>
+                <td>Simetría respecto al eje \(y\), áreas idénticas</td>
+              </tr>
+              <tr>
+                <td><strong>Función impar</strong></td>
+                <td>\(\int_{-a}^a f(x)\,dx = 0\) si \(f(-x)=-f(x)\)</td>
+                <td>Simetría central, áreas opuestas se cancelan</td>
+              </tr>
+              <tr>
+                <td><strong>Desigualdad</strong></td>
+                <td>Si \(f(x) \leq g(x)\), entonces \(\int_a^b f \leq \int_a^b g\)</td>
+                <td>La función mayor encierra mayor área</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="math-formula">
+            <strong>Integral de límites iguales e inversos:</strong><br><br>
+            \[\int_a^a f(x)\,dx = 0 \quad \text{y} \quad \int_a^b f(x)\,dx = -\int_b^a f(x)\,dx\]
+          </div>
+          <div class="graph-panel">
+            <div class="graph-kicker">Conexión Teórica-Visual</div>
+            <p>
+              Cada propiedad algebraica tiene una contraparte geométrica observable. La linealidad 
+              corresponde a la superposición de regiones; la aditividad del intervalo refleja la 
+              descomposición de áreas complejas en sumas de áreas simples; las simetrías par/impar 
+              se manifiestan en reflexiones respecto a ejes coordenados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="metodos" class="section" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Técnicas de Integración</span>
+          <h2>Métodos de Integración</h2>
+          <p class="section-subtitle">
+            Sistematización de técnicas para evaluar integrales indefinidas: sustitución, integración 
+            por partes, potencias trigonométricas, sustitución trigonométrica y fracciones parciales.
+          </p>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-sync-alt"></i> Método de Sustitución (Cambio de Variable)</h3>
+          <p>
+            La sustitución es la técnica inversa de la regla de la cadena en diferenciación. 
+            Cuando el integrando presenta la forma \(f(g(x)) \cdot g'(x)\), introducimos \(u = g(x)\), 
+            con lo cual \(du = g'(x)\,dx\) y la integral se transforma en \(\int f(u)\,du\).
+          </p>
+          <div class="math-formula important">
+            Si \(u = g(x)\) con \(g\) diferenciable, entonces:
+            \[\int f(g(x))g'(x)\,dx = \int f(u)\,du = F(u) + C = F(g(x)) + C\]
+          </div>
+          <p>
+            Para integrales definidas, los límites de integración deben transformarse: 
+            si \(u = g(x)\), cuando \(x=a\) tenemos \(u=g(a)\), y cuando \(x=b\), \(u=g(b)\). 
+            Alternativamente, podemos calcular la antiderivada en términos de \(x\) y evaluar 
+            en los límites originales.
+          </p>
+          
+          <div class="exercise-card reveal">
+            <div class="exercise-header">
+              <div class="exercise-number">1</div>
+              <h3>\(\int 2x\cos(x^2)\,dx\)</h3>
+              <span class="difficulty basic">Básico</span>
+            </div>
+            <div class="exercise-body">
+              <div class="problem-statement">
+                <strong>Análisis:</strong> Reconocemos la estructura \(f(g(x)) \cdot g'(x)\) donde 
+                \(g(x) = x^2\) y \(g'(x) = 2x\).
+              </div>
+              <div class="solution-steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <p>Sustitución: \(u = x^2\), por tanto \(du = 2x\,dx\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <p>Transformación: \(\int 2x\cos(x^2)\,dx = \int \cos(u)\,du\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <p>Integración: \(\int \cos(u)\,du = \sin(u) + C\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">4</div>
+                  <p>Retroceso: \(\sin(x^2) + C\)</p>
+                </div>
+              </div>
+              <div class="result-box">
+                <span class="result-label">Solución</span>
+                <span class="result-value">\(\sin(x^2) + C\)</span>
+              </div>
+              <div class="canvas-container">
+                <canvas id="canvas1" data-graph="substitution-basic"></canvas>
+                <div class="canvas-overlay">\(f(x)=2x\cos(x^2)\) y \(F(x)=\sin(x^2)\)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exercise-card reveal">
+            <div class="exercise-header">
+              <div class="exercise-number">2</div>
+              <h3>\(\int x^2 e^{x^3}\,dx\)</h3>
+              <span class="difficulty medium">Medio</span>
+            </div>
+            <div class="exercise-body">
+              <div class="problem-statement">
+                <strong>Estrategia:</strong> El exponente \(x^3\) sugiere \(u = x^3\). 
+                Notamos que \(du = 3x^2\,dx\), por lo que \(x^2\,dx = \frac{du}{3}\).
+              </div>
+              <div class="solution-steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <p>Sustitución: \(u = x^3\), \(du = 3x^2\,dx\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <p>Reescritura: \(\int x^2 e^{x^3}\,dx = \frac{1}{3}\int e^u\,du\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <p>Resultado: \(\frac{1}{3}e^u + C = \frac{1}{3}e^{x^3} + C\)</p>
+                </div>
+              </div>
+              <div class="result-box">
+                <span class="result-label">Solución</span>
+                <span class="result-value">\(\frac{1}{3}e^{x^3} + C\)</span>
+              </div>
+              <div class="canvas-container">
+                <canvas id="graph-sub-exp" data-graph="sub-exp"></canvas>
+                <div class="canvas-overlay">Crecimiento exponencial del integrando</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exercise-card reveal">
+            <div class="exercise-header">
+              <div class="exercise-number">3</div>
+              <h3>\(\int_0^2 x\sqrt{x^2+1}\,dx\)</h3>
+              <span class="difficulty medium">Medio</span>
+            </div>
+            <div class="exercise-body">
+              <div class="problem-statement">
+                <strong>Integral definida:</strong> Aplicamos sustitución cambiando los límites 
+                de integración para evitar retroceder a la variable original.
+              </div>
+              <div class="solution-steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <p>Sustitución: \(u = x^2 + 1\), \(du = 2x\,dx\), \(x\,dx = \frac{du}{2}\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <p>Nuevos límites: \(x=0 \Rightarrow u=1\), \(x=2 \Rightarrow u=5\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <p>Transformación: \(\frac{1}{2}\int_1^5 \sqrt{u}\,du = \frac{1}{2}\int_1^5 u^{1/2}\,du\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">4</div>
+                  <p>Evaluación: \(\frac{1}{2} \cdot \frac{2}{3}\left[u^{3/2}\right]_1^5 = \frac{1}{3}(5\sqrt{5} - 1)\)</p>
+                </div>
+              </div>
+              <div class="result-box">
+                <span class="result-label">Valor Exacto</span>
+                <span class="result-value">\(\frac{5\sqrt{5}-1}{3} \approx 3.393\)</span>
+              </div>
+              <div class="canvas-container">
+                <canvas id="graph-sub-def" data-graph="sub-def"></canvas>
+                <div class="canvas-overlay">Área exacta con cambio de variable</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-puzzle-piece"></i> Integración por Partes</h3>
+          <p>
+            Derivada de la regla del producto para diferenciación: si \(u\) y \(v\) son funciones 
+            diferenciables, entonces \((uv)' = u'v + uv'\). Integrando ambos lados obtenemos la 
+            fórmula de integración por partes, útil cuando el integrando es producto de funciones 
+            de tipos diferentes (algebraicas × exponenciales, algebraicas × trigonométricas, etc.).
+          </p>
+          <div class="math-formula important">
+            \[\int u\,dv = uv - \int v\,du\]
+          </div>
+          <p>
+            La estrategia consiste en elegir \(u\) siguiendo la regla LIATE (Logarítmicas, 
+            Inversas trigonométricas, Algebraicas, Trigonométricas, Exponenciales), priorizando 
+            la función que simplifica al derivarse como \(u\), y tomando el resto como \(dv\).
+          </p>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-parts-basic" data-graph="parts-basic"></canvas>
+                <div class="canvas-overlay">\(\int xe^x\,dx = e^x(x-1)+C\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Producto exponencial</div>
+                Para \(\int xe^x\,dx\), elegimos \(u=x\) (algebraica) y \(dv=e^x\,dx\) (exponencial). 
+                Resultado: \(e^x(x-1)+C\).
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-parts-ln" data-graph="parts-ln"></canvas>
+                <div class="canvas-overlay">\(\int \ln x\,dx = x(\ln x-1)+C\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Logaritmo natural</div>
+                Caso especial donde \(\int \ln x\,dx\) se resuelve por partes escribiendo 
+                \(\ln x = 1 \cdot \ln x\), tomando \(u=\ln x\) y \(dv=dx\).
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-parts-double" data-graph="parts-double"></canvas>
+                <div class="canvas-overlay">\(\int x^2e^x\,dx = e^x(x^2-2x+2)+C\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Aplicación múltiple</div>
+                Potencias algebraicas superiores requieren aplicación sucesiva de partes. 
+                Cada reducción disminuye el grado del polinomio hasta obtener una integral directa.
+              </div>
+            </div>
+          </div>
+          <div class="note-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+              <strong>Circularidad:</strong> Si la elección de \(u\) y \(dv\) produce una integral 
+              más compleja que la original, debe invertirse la asignación o considerarse otro método.
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-wave-square"></i> Potencias Trigonométricas</h3>
+          <p>
+            Integrales de la forma \(\int \sin^m(x)\cos^n(x)\,dx\) requieren estrategias específicas 
+            según la paridad de los exponentes. Las identidades fundamentales son:
+            \(\sin^2(x) + \cos^2(x) = 1\), \(\sin^2(x) = \frac{1-\cos(2x)}{2}\), 
+            \(\cos^2(x) = \frac{1+\cos(2x)}{2}\).
+          </p>
+          <div class="methods-grid">
+            <div class="method-category">
+              <h4><i class="fas fa-angle-up"></i> Potencia impar de seno</h4>
+              <p>Factorizar un \(\sin(x)\) para usar con \(dx\), convertir el resto a cosenos 
+              mediante \(\sin^2(x) = 1 - \cos^2(x)\), y sustituir \(u = \cos(x)\).</p>
+              <div class="math-formula" style="margin:1rem 0;padding:1rem;">
+                \[\int \sin^3(x)\,dx = \int (1-\cos^2(x))\sin(x)\,dx = -\cos(x) + \frac{\cos^3(x)}{3} + C\]
+              </div>
+            </div>
+            <div class="method-category">
+              <h4><i class="fas fa-angle-up"></i> Potencia impar de coseno</h4>
+              <p>Análogo al caso anterior: factorizar \(\cos(x)\), convertir resto a senos, 
+              sustituir \(u = \sin(x)\).</p>
+            </div>
+            <div class="method-category">
+              <h4><i class="fas fa-angle-double-up"></i> Potencias pares ambas</h4>
+              <p>Usar identidades de ángulo medio para reducir potencias, generando cosenos 
+              de múltiplos del ángulo que son directamente integrables.</p>
+              <div class="math-formula" style="margin:1rem 0;padding:1rem;">
+                \[\int \sin^2(x)\,dx = \int \frac{1-\cos(2x)}{2}\,dx = \frac{x}{2} - \frac{\sin(2x)}{4} + C\]
+              </div>
+            </div>
+          </div>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-sin-cube" data-graph="sin-cube"></canvas>
+                <div class="canvas-overlay">\(\int \sin^3 x\,dx\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Potencia impar</div>
+                La función conserva el signo del seno. La antiderivada muestra comportamiento 
+                periódico con amplitud modulada.
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-sin-square" data-graph="sin-square"></canvas>
+                <div class="canvas-overlay">\(\int \sin^2 x\,dx\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Potencia par</div>
+                La función es no negativa, por tanto su integral acumulada es monótona creciente. 
+                El término lineal \(\frac{x}{2}\) domina el crecimiento a largo plazo.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-shapes"></i> Sustitución Trigonométrica</h3>
+          <p>
+            Técnica para eliminar radicales de la forma \(\sqrt{a^2-x^2}\), \(\sqrt{a^2+x^2}\) o 
+            \(\sqrt{x^2-a^2}\) mediante sustituciones basadas en identidades pitagóricas. 
+            La elección depende de la expresión radical presente:
+          </p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Expresión</th>
+                <th>Sustitución</th>
+                <th>Identidad Utilizada</th>
+                <th>Diferencial</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>\(\sqrt{a^2-x^2}\)</td>
+                <td>\(x = a\sin\theta\)</td>
+                <td>\(1-\sin^2\theta = \cos^2\theta\)</td>
+                <td>\(dx = a\cos\theta\,d\theta\)</td>
+              </tr>
+              <tr>
+                <td>\(\sqrt{a^2+x^2}\)</td>
+                <td>\(x = a\tan\theta\)</td>
+                <td>\(1+\tan^2\theta = \sec^2\theta\)</td>
+                <td>\(dx = a\sec^2\theta\,d\theta\)</td>
+              </tr>
+              <tr>
+                <td>\(\sqrt{x^2-a^2}\)</td>
+                <td>\(x = a\sec\theta\)</td>
+                <td>\(\sec^2\theta-1 = \tan^2\theta\)</td>
+                <td>\(dx = a\sec\theta\tan\theta\,d\theta\)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Tras la sustitución, el radical se simplifica algebraicamente. La integral resultante 
+            en términos de \(\theta\) se resuelve con técnicas trigonométricas, y finalmente se 
+            retorna a la variable original \(x\) construyendo un triángulo rectángulo de referencia.
+          </p>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-trig-sub" data-graph="trig-sub"></canvas>
+                <div class="canvas-overlay">\(\int \frac{dx}{\sqrt{4-x^2}} = \arcsin\left(\frac{x}{2}\right) + C\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Raíz cuadrada</div>
+                La sustitución \(x=2\sin\theta\) transforma el denominador en \(2\cos\theta\). 
+                La función resultante tiene asíntotas verticales en \(x=\pm 2\).
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-triangle" data-graph="triangle"></canvas>
+                <div class="canvas-overlay">Triángulo de referencia para \(x=2\sin\theta\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Triángulo auxiliar</div>
+                Si \(x = 2\sin\theta\), entonces \(\sin\theta = \frac{x}{2}\). Construyendo el 
+                triángulo: cateto opuesto \(x\), hipotenusa \(2\), cateto adyacente \(\sqrt{4-x^2}\).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-content reveal">
+          <h3><i class="fas fa-fraction"></i> Fracciones Parciales</h3>
+          <p>
+            Método para integrar funciones racionales \(\frac{P(x)}{Q(x)}\) donde \(\deg(P) < \deg(Q)\). 
+            Se factoriza \(Q(x)\) en factores lineales y cuadráticos irreducibles, y se descompone 
+            la fracción en suma de fracciones simples con coeficientes indeterminados.
+          </p>
+          <div class="math-formula">
+            <strong>Descomposición según el factor:</strong><br><br>
+            Factor lineal simple \((x-a)\): \(\frac{A}{x-a}\)<br>
+            Factor lineal repetido \((x-a)^n\): \(\frac{A_1}{x-a} + \frac{A_2}{(x-a)^2} + ... + \frac{A_n}{(x-a)^n}\)<br>
+            Factor cuadrático irreducible \((x^2+px+q)\): \(\frac{Ax+B}{x^2+px+q}\)
+          </div>
+          <p>
+            Los coeficientes se determinan igualando la suma de fracciones parciales a la fracción 
+            original y resolviendo el sistema lineal resultante, o mediante el método de cubrimiento 
+            para factores lineales simples.
+          </p>
+          <div class="exercise-card reveal">
+            <div class="exercise-header">
+              <div class="exercise-number">E</div>
+              <h3>Descomposición de \(\frac{3x+5}{x^2-4}\)</h3>
+              <span class="difficulty medium">Medio</span>
+            </div>
+            <div class="exercise-body">
+              <div class="solution-steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <p>Factorización: \(x^2-4 = (x-2)(x+2)\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <p>Forma de descomposición: \(\frac{3x+5}{(x-2)(x+2)} = \frac{A}{x-2} + \frac{B}{x+2}\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <p>Combinación: \(3x+5 = A(x+2) + B(x-2)\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">4</div>
+                  <p>Evaluación: \(x=2 \Rightarrow 11=4A \Rightarrow A=\frac{11}{4}\); 
+                  \(x=-2 \Rightarrow -1=-4B \Rightarrow B=\frac{1}{4}\)</p>
+                </div>
+                <div class="step">
+                  <div class="step-number">5</div>
+                  <p>Integración: \(\int \frac{3x+5}{x^2-4}\,dx = \frac{11}{4}\ln|x-2| + \frac{1}{4}\ln|x+2| + C\)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="graph-grid">
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-partial-original" data-graph="partial-original"></canvas>
+                <div class="canvas-overlay">\(\frac{3x+5}{x^2-4}\)</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Función original</div>
+                Asíntotas verticales en \(x=\pm 2\) donde el denominador se anula. 
+                El comportamiento local cerca de las singularidades determina los coeficientes de la descomposición.
+              </div>
+            </div>
+            <div class="graph-card reveal">
+              <div class="canvas-container">
+                <canvas id="graph-partial-decomp" data-graph="partial-decomp"></canvas>
+                <div class="canvas-overlay">Suma de fracciones parciales</div>
+              </div>
+              <div class="graph-caption">
+                <div class="graph-kicker">Descompuesta</div>
+                La suma \(\frac{11}{4(x-2)} + \frac{1}{4(x+2)}\) reproduce exactamente la función original 
+                en su dominio natural \(\mathbb{R}\setminus\{-2,2\}\).
+              </div>
+            </div>
+          </div>
+          <div class="graph-panel">
+            <div class="graph-kicker">Mapa de Técnicas</div>
+            <p>
+              La elección del método depende de la estructura del integrando: sustitución para 
+              composiciones con factor de cadena explícito, partes para productos de tipos distintos, 
+                            potencias trigonométricas para integrales de senos y cosenos con exponentes enteros positivos, sustitución trigonométrica para radicales cuadráticos, y fracciones parciales para cocientes de polinomios donde el grado del numerador es menor que el del denominador.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ejercicios" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Práctica Guiada</span>
+          <h2>Ejercicios Interactivos</h2>
+          <p class="section-subtitle">
+            Ajusta parámetros y observa cómo el área cambia al modificar la función y los límites de integración.
+          </p>
+        </div>
+
+        <div class="content-grid">
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-sliders-h"></i> Visualizador de Integrales</h3>
+            <p>Ajusta los parámetros para explorar diferentes funciones y observar el área bajo la curva en tiempo real.</p>
+            <div class="canvas-container">
+              <canvas id="interactiveCanvas"></canvas>
+              <div class="canvas-overlay">Área sombreada = <span id="areaValue">0.000</span></div>
+            </div>
+            <div class="interactive-controls">
+              <div class="control-group">
+                <label>Función:</label>
+                <select id="functionSelect" style="flex:1; padding:0.6rem; background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border-medium); border-radius:8px; font-family:'JetBrains Mono', monospace;">
+                  <option value="x2">x²</option>
+                  <option value="sin">sin(x)</option>
+                  <option value="exp">e^x</option>
+                  <option value="linear">2x + 1</option>
+                </select>
+              </div>
+              <div class="control-group">
+                <label>Límite a:</label>
+                <span id="aValue">0</span>
+                <input type="range" id="aSlider" min="-3" max="3" step="0.1" value="0">
+              </div>
+              <div class="control-group">
+                <label>Límite b:</label>
+                <span id="bValue">2</span>
+                <input type="range" id="bSlider" min="-3" max="3" step="0.1" value="2">
+              </div>
+            </div>
+            <div class="result-box" id="resultBox">
+              <span class="result-label">Integral Aproximada</span>
+              <span class="result-value" id="integralResult">Calculando...</span>
+            </div>
+          </div>
+
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-tasks"></i> Ejercicios Propuestos</h3>
+            
+            <div class="exercise-card" style="margin-bottom:1.5rem;">
+              <div class="exercise-header" style="padding:1.2rem 1.5rem;">
+                <div class="exercise-number" style="width:40px;height:40px;font-size:1rem;">P1</div>
+                <h3 style="font-size:1.1rem;">Práctica de Sustitución</h3>
+                <span class="difficulty basic">Básico</span>
+              </div>
+              <div class="exercise-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary); margin-bottom:1rem; font-family:'JetBrains Mono', monospace;">Resuelve: \(\int \frac{\ln x}{x} \, dx\)</p>
+                <button onclick="toggleSolution('sol1')" class="btn btn-secondary" style="padding:0.6rem 1.2rem; font-size:0.9rem;">
+                  <i class="fas fa-eye"></i> Ver Solución
+                </button>
+                <div id="sol1" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-tertiary); border-radius:8px; border-left:3px solid var(--accent);">
+                  <p style="color:var(--text-secondary); font-size:0.95rem;">
+                    <strong>Solución:</strong> Sea \(u = \ln x\), entonces \(du = \frac{1}{x}dx\).
+                    La integral se transforma en \(\int u\,du = \frac{u^2}{2}+C = \frac{(\ln x)^2}{2}+C\).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="exercise-card" style="margin-bottom:1.5rem;">
+              <div class="exercise-header" style="padding:1.2rem 1.5rem;">
+                <div class="exercise-number" style="width:40px;height:40px;font-size:1rem;">P2</div>
+                <h3 style="font-size:1.1rem;">Integración por Partes</h3>
+                <span class="difficulty medium">Medio</span>
+              </div>
+              <div class="exercise-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary); margin-bottom:1rem; font-family:'JetBrains Mono', monospace;">Resuelve: \(\int x \sin x \, dx\)</p>
+                <button onclick="toggleSolution('sol2')" class="btn btn-secondary" style="padding:0.6rem 1.2rem; font-size:0.9rem;">
+                  <i class="fas fa-eye"></i> Ver Solución
+                </button>
+                <div id="sol2" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-tertiary); border-radius:8px; border-left:3px solid var(--accent);">
+                  <p style="color:var(--text-secondary); font-size:0.95rem;">
+                    <strong>Solución:</strong> Por partes: \(u=x\), \(dv=\sin x\,dx\), por tanto \(du=dx\), \(v=-\cos x\).
+                    Aplicando la fórmula: \(-x\cos x + \int \cos x\,dx = -x\cos x + \sin x + C\).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="exercise-card">
+              <div class="exercise-header" style="padding:1.2rem 1.5rem;">
+                <div class="exercise-number" style="width:40px;height:40px;font-size:1rem;">P3</div>
+                <h3 style="font-size:1.1rem;">Integral Definida</h3>
+                <span class="difficulty medium">Medio</span>
+              </div>
+              <div class="exercise-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary); margin-bottom:1rem; font-family:'JetBrains Mono', monospace;">Calcula: \(\int_0^{\pi/2}\cos^3 x\,dx\)</p>
+                <button onclick="toggleSolution('sol3')" class="btn btn-secondary" style="padding:0.6rem 1.2rem; font-size:0.9rem;">
+                  <i class="fas fa-eye"></i> Ver Solución
+                </button>
+                <div id="sol3" style="display:none; margin-top:1rem; padding:1rem; background:var(--bg-tertiary); border-radius:8px; border-left:3px solid var(--accent);">
+                  <p style="color:var(--text-secondary); font-size:0.95rem;">
+                    <strong>Solución:</strong> Reescribimos \(\cos^3 x = (1-\sin^2 x)\cos x\). 
+                    Sustituyendo \(u=\sin x\), \(du=\cos x\,dx\), los límites cambian de \(0\) a \(1\):
+                    \(\int_0^1 (1-u^2)\,du = \left[u-\frac{u^3}{3}\right]_0^1 = \frac{2}{3}\).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="aplicaciones" class="section" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Contexto Real</span>
+          <h2>Aplicaciones Prácticas</h2>
+          <p class="section-subtitle">
+            Las integrales aparecen en física, economía, química e ingeniería como herramientas fundamentales para medir acumulaciones y cambios.
+          </p>
+        </div>
+
+        <div class="content-grid">
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-rocket"></i> Física: Cinemática</h3>
+            <p>
+              En la cinemática de una partícula, si \(v(t)\) representa la velocidad instantánea, 
+              la integral de la velocidad respecto al tiempo calcula el desplazamiento neto. 
+              Análogamente, la integral de la aceleración \(a(t)\) determina el cambio en la velocidad.
+            </p>
+            <div class="math-formula">
+              \[s(t) = s_0 + \int_0^t v(\tau)\,d\tau \quad \text{y} \quad v(t) = v_0 + \int_0^t a(\tau)\,d\tau\]
+            </div>
+            <p>
+              Cuando la velocidad no es constante, el desplazamiento no puede calcularse simplemente 
+              como \(v \cdot t\), sino que requiere la evaluación de la integral definida que 
+              acumula las contribuciones infinitesimales del movimiento.
+            </p>
+            <div class="canvas-container">
+              <canvas id="graph-physics" data-graph="physics"></canvas>
+              <div class="canvas-overlay">Velocidad variable y desplazamiento acumulado</div>
+            </div>
+          </div>
+
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-chart-line"></i> Economía: Excedentes</h3>
+            <p>
+              El excedente del consumidor representa la diferencia entre lo que los consumidores 
+              están dispuestos a pagar y lo que realmente pagan. Geométricamente, es el área 
+              entre la curva de demanda y el precio de equilibrio.
+            </p>
+            <p>
+              El excedente del productor, análogamente, es el área entre el precio de equilibrio 
+              y la curva de oferta. Ambos se calculan mediante integrales definidas de las 
+              funciones de oferta y demanda.
+            </p>
+            <div class="canvas-container">
+              <canvas id="graph-economy" data-graph="economy"></canvas>
+              <div class="canvas-overlay">Demanda, oferta y excedentes del mercado</div>
+            </div>
+          </div>
+
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-flask"></i> Química: Cinética</h3>
+            <p>
+              En la cinética química, las leyes de velocidad integradas relacionan la concentración 
+              de reactivos con el tiempo. Para una reacción de primer orden, la integración de 
+              la ley de velocidad produce una dependencia exponencial del tiempo.
+            </p>
+            <div class="math-formula">
+              \[\ln[A] = \ln[A]_0 - kt \quad \text{o equivalentemente} \quad [A] = [A]_0 e^{-kt}\]
+            </div>
+            <p>
+              La constante de velocidad \(k\) se determina experimentalmente midiendo concentraciones 
+              en diferentes tiempos y aplicando métodos de integración numérica o analítica.
+            </p>
+            <div class="canvas-container">
+              <canvas id="graph-chemistry" data-graph="chemistry"></canvas>
+              <div class="canvas-overlay">Decaimiento exponencial de concentración</div>
+            </div>
+          </div>
+
+          <div class="theory-content reveal">
+            <h3><i class="fas fa-bolt"></i> Ingeniería: Trabajo Mecánico</h3>
+            <p>
+              El trabajo realizado por una fuerza variable \(F(x)\) que desplaza un objeto desde 
+              la posición \(a\) hasta \(b\) se calcula integrando la fuerza respecto al desplazamiento. 
+              Esta definición generaliza el concepto de trabajo como fuerza por distancia.
+            </p>
+            <div class="math-formula">
+              \[W = \int_a^b F(x)\,dx\]
+            </div>
+            <p>
+              Para un resorte que sigue la Ley de Hooke \(F(x) = kx\), el trabajo necesario 
+              para comprimirlo o estirarlo una distancia \(d\) desde su posición natural es 
+              \(W = \frac{1}{2}kd^2\), resultado de integrar la fuerza lineal.
+            </p>
+            <div class="canvas-container">
+              <canvas id="graph-work" data-graph="work"></canvas>
+              <div class="canvas-overlay">Trabajo como área bajo la curva de fuerza</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4><i class="fas fa-users"></i> Integrantes del Equipo</h4>
+        <p>
+          Guerrero Quijano Bryan Sahid<br>
+          Flores Ramirez Angel Isidro<br>
+          Potrero Fuentes Neri Zaid
+        </p>
+      </div>
+      <div class="footer-section">
+        <h4><i class="fas fa-code"></i> Desarrollo</h4>
+        <p>Proyecto académico de cálculo integral con visualizaciones interactivas.</p>
+      </div>
+      <div class="footer-section">
+        <h4><i class="fas fa-calendar"></i> Fecha</h4>
+        <p>15 de abril de 2026</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Creador: Guerrero Quijano Bryan Sahid | 15/04/2026</p>
+    </div>
+  </footer>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+
+    document.body.classList.add('js-enhanced');
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach((section) => {
+        if (pageYOffset >= section.offsetTop - 200) current = section.getAttribute('id');
+      });
+      navLinks.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href').slice(1) === current);
+      });
+    });
+
+    function toggleSolution(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+      if (window.MathJax?.typesetPromise) window.MathJax.typesetPromise([el]);
+    }
+
+    function prepareCanvas(canvas, forcedHeight = null) {
+      const dpr = window.devicePixelRatio || 1;
+      const width = canvas.offsetWidth || 300;
+      const height = forcedHeight || canvas.offsetHeight || 320;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, width, height };
+    }
+
+    function paintGraphSurface(ctx, width, height) {
+      const bg = ctx.createLinearGradient(0, 0, 0, height);
+      bg.addColorStop(0, '#162042');
+      bg.addColorStop(0.55, '#101730');
+      bg.addColorStop(1, '#0a1020');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, width, height);
+
+      const glowA = ctx.createRadialGradient(width * 0.15, height * 0.1, 0, width * 0.15, height * 0.1, width * 0.45);
+      glowA.addColorStop(0, 'rgba(99,102,241,0.2)');
+      glowA.addColorStop(1, 'rgba(99,102,241,0)');
+      ctx.fillStyle = glowA;
+      ctx.fillRect(0, 0, width, height);
+
+      const glowB = ctx.createRadialGradient(width * 0.85, height * 0.82, 0, width * 0.85, height * 0.82, width * 0.38);
+      glowB.addColorStop(0, 'rgba(6,182,212,0.15)');
+      glowB.addColorStop(1, 'rgba(6,182,212,0)');
+      ctx.fillStyle = glowB;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function createChart(width, height, options = {}) {
+      const {
+        xMin = -5,
+        xMax = 5,
+        yMin = -5,
+        yMax = 5,
+        padding = { top: 24, right: 24, bottom: 34, left: 42 }
+      } = options;
+      const innerWidth = Math.max(1, width - padding.left - padding.right);
+      const innerHeight = Math.max(1, height - padding.top - padding.bottom);
+      return {
+        width,
+        height,
+        padding,
+        xMin,
+        xMax,
+        yMin,
+        yMax,
+        innerWidth,
+        innerHeight,
+        mapX(x) {
+          return padding.left + ((x - xMin) / (xMax - xMin)) * innerWidth;
+        },
+        mapY(y) {
+          return padding.top + innerHeight - ((y - yMin) / (yMax - yMin)) * innerHeight;
+        },
+        clampX(x) {
+          return Math.max(padding.left, Math.min(width - padding.right, x));
+        },
+        clampY(y) {
+          return Math.max(padding.top, Math.min(height - padding.bottom, y));
+        }
+      };
+    }
+
+    function drawGrid(ctx, chart, xSteps = 8, ySteps = 6) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(148,163,184,0.1)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= xSteps; i++) {
+        const x = chart.padding.left + (chart.innerWidth * i) / xSteps;
+        ctx.beginPath();
+        ctx.moveTo(x, chart.padding.top);
+        ctx.lineTo(x, chart.height - chart.padding.bottom);
+        ctx.stroke();
+      }
+      for (let i = 0; i <= ySteps; i++) {
+        const y = chart.padding.top + (chart.innerHeight * i) / ySteps;
+        ctx.beginPath();
+        ctx.moveTo(chart.padding.left, y);
+        ctx.lineTo(chart.width - chart.padding.right, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawAxes(ctx, chart, options = {}) {
+      const { color = 'rgba(226,232,240,0.8)', labels = false, xLabel = 'x', yLabel = 'y', tickCountX = 8, tickCountY = 6 } = options;
+      const xAxisY = chart.yMin <= 0 && chart.yMax >= 0 ? chart.mapY(0) : chart.mapY(chart.yMin);
+      const yAxisX = chart.xMin <= 0 && chart.xMax >= 0 ? chart.mapX(0) : chart.mapX(chart.xMin);
+
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(chart.padding.left, xAxisY);
+      ctx.lineTo(chart.width - chart.padding.right, xAxisY);
+      ctx.moveTo(yAxisX, chart.padding.top);
+      ctx.lineTo(yAxisX, chart.height - chart.padding.bottom);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(226,232,240,0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= tickCountX; i++) {
+        const value = chart.xMin + ((chart.xMax - chart.xMin) * i) / tickCountX;
+        const x = chart.mapX(value);
+        ctx.beginPath();
+        ctx.moveTo(x, xAxisY - 4);
+        ctx.lineTo(x, xAxisY + 4);
+        ctx.stroke();
+      }
+      for (let i = 0; i <= tickCountY; i++) {
+        const value = chart.yMin + ((chart.yMax - chart.yMin) * i) / tickCountY;
+        const y = chart.mapY(value);
+        ctx.beginPath();
+        ctx.moveTo(yAxisX - 4, y);
+        ctx.lineTo(yAxisX + 4, y);
+        ctx.stroke();
+      }
+
+      if (labels) {
+        ctx.fillStyle = 'rgba(226,232,240,0.8)';
+        ctx.font = 'bold 13px JetBrains Mono';
+        ctx.fillText(xLabel, chart.width - chart.padding.right + 6, xAxisY - 8);
+        ctx.fillText(yLabel, yAxisX + 10, chart.padding.top - 8);
+      }
+      ctx.restore();
+    }
+
+    function plotFunction(ctx, chart, fn, options = {}) {
+      const {
+        color = '#6366f1',
+        lineWidth = 3,
+        progress = 1,
+        dashed = false,
+        skip = () => false,
+        glow = color,
+        samples = 320
+      } = options;
+      const limit = Math.max(2, Math.floor(samples * progress));
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = 20;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      if (dashed) ctx.setLineDash([8, 6]);
+      ctx.beginPath();
+      let started = false;
+      let lastPoint = null;
+      for (let i = 0; i <= limit; i++) {
+        const x = chart.xMin + ((chart.xMax - chart.xMin) * i) / samples;
+        if (skip(x)) {
+          started = false;
+          continue;
+        }
+        const y = fn(x);
+        const px = chart.mapX(x);
+        const py = chart.mapY(y);
+        if (!started) {
+          ctx.moveTo(px, py);
+          started = true;
+        } else {
+          ctx.lineTo(px, py);
+        }
+        lastPoint = { x: px, y: py };
+      }
+      ctx.stroke();
+      ctx.restore();
+      return lastPoint;
+    }
+
+    function fillArea(ctx, chart, fn, a, b, options = {}) {
+      const { color = 'rgba(99,102,241,0.25)', baseline = 0, samples = 260 } = options;
+      const start = Math.min(a, b);
+      const end = Math.max(a, b);
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(chart.mapX(start), chart.mapY(baseline));
+      for (let i = 0; i <= samples; i++) {
+        const x = start + ((end - start) * i) / samples;
+        ctx.lineTo(chart.mapX(x), chart.mapY(fn(x)));
+      }
+      ctx.lineTo(chart.mapX(end), chart.mapY(baseline));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawLabel(ctx, text, x, y, color = '#e2e8f0') {
+      ctx.fillStyle = color;
+      ctx.font = 'bold 13px Inter';
+      ctx.fillText(text, x, y);
+    }
+
+    function drawLegend(ctx, items, x = 18, y = 20) {
+      ctx.save();
+      const rowHeight = 26;
+      const width = 190;
+      const height = items.length * rowHeight + 16;
+      ctx.fillStyle = 'rgba(9,14,28,0.85)';
+      ctx.strokeStyle = 'rgba(148,163,184,0.2)';
+      ctx.lineWidth = 1;
+      ctx.fillRect(x - 10, y - 14, width, height);
+      ctx.strokeRect(x - 10, y - 14, width, height);
+      items.forEach((item, index) => {
+        const yy = y + index * rowHeight;
+        ctx.strokeStyle = item.color;
+        ctx.lineWidth = 3;
+        if (item.dashed) ctx.setLineDash([6, 5]); else ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(x + 4, yy);
+        ctx.lineTo(x + 32, yy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = 'bold 12px Inter';
+        ctx.fillText(item.label, x + 40, yy + 4);
+      });
+      ctx.restore();
+    }
+
+    function drawFocusDot(ctx, point, color) {
+      if (!point) return;
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function riemannApprox(fn, a, b, n = 220) {
+      const h = (b - a) / n;
+      let sum = 0;
+      for (let i = 0; i < n; i++) {
+        const x = a + i * h + h / 2;
+        sum += fn(x) * h;
+      }
+      return sum;
+    }
+
+    function drawRects(ctx, chart, fn, a, b, count, options = {}) {
+      const { color = 'rgba(16,185,129,0.24)' } = options;
+      const n = Math.max(1, count);
+      const h = (b - a) / n;
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.strokeStyle = 'rgba(16,185,129,0.7)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < n; i++) {
+        const x = a + i * h;
+        const mid = x + h / 2;
+        const y = fn(mid);
+        const px = chart.mapX(x);
+        const rectWidth = chart.mapX(x + h) - chart.mapX(x);
+        const py = chart.mapY(y);
+        const base = chart.mapY(0);
+        ctx.fillRect(px, Math.min(py, base), rectWidth, Math.abs(base - py));
+        ctx.strokeRect(px, Math.min(py, base), rectWidth, Math.abs(base - py));
+      }
+      ctx.restore();
+    }
+
+    function drawTriangle(canvas) {
+      const { ctx, width, height } = prepareCanvas(canvas, 320);
+      paintGraphSurface(ctx, width, height);
+      const p1 = { x: width * 0.2, y: height * 0.78 };
+      const p2 = { x: width * 0.78, y: height * 0.78 };
+      const p3 = { x: width * 0.78, y: height * 0.28 };
+      
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.closePath();
+      ctx.stroke();
+      
+      ctx.fillStyle = 'rgba(99,102,241,0.2)';
+      ctx.fill();
+      
+      drawLabel(ctx, '2', (p1.x + p2.x) / 2, p1.y + 22, '#10b981');
+      drawLabel(ctx, 'x', p2.x + 14, (p2.y + p3.y) / 2, '#ec4899');
+      drawLabel(ctx, '√(4 - x²)', (p1.x + p3.x) / 2 - 20, (p1.y + p3.y) / 2 - 10, '#f8fafc');
+      drawLabel(ctx, 'θ', p2.x - 32, p2.y - 10, '#f59e0b');
+      drawLabel(ctx, 'x = 2 sinθ', 20, 32, '#94a3b8');
+    }
+
+    function drawApplicationGraph(canvas, type, progress) {
+      const { ctx, width, height } = prepareCanvas(canvas);
+      paintGraphSurface(ctx, width, height);
+
+      if (type === 'physics') {
+        const chart = createChart(width, height, { xMin: -1, xMax: 6, yMin: -2, yMax: 3.8 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 't', yLabel: 'v' });
+        const v = (t) => 0.5 * Math.sin(1.2 * t) + 0.35 * t + 0.3;
+        fillArea(ctx, chart, v, 0, 4.5 * progress, { color: 'rgba(16,185,129,0.25)' });
+        const p = plotFunction(ctx, chart, v, { progress, color: '#06b6d4', glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#06b6d4', label: 'Velocidad v(t)' }, { color: '#10b981', label: 'Desplazamiento' }]);
+        drawFocusDot(ctx, p, '#06b6d4');
+      }
+
+      if (type === 'economy') {
+        const chart = createChart(width, height, { xMin: 0, xMax: 7, yMin: 0, yMax: 5.4 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 'q', yLabel: 'p' });
+        const demand = (q) => 4.8 - 0.55 * q;
+        const supply = (q) => 0.8 + 0.38 * q;
+        const qStar = 4.4;
+        const pStar = demand(qStar);
+        const toPx = (q) => chart.mapX(q);
+        const toPy = (p) => chart.mapY(p);
+        
+        ctx.fillStyle = 'rgba(99,102,241,0.22)';
+        ctx.beginPath();
+        ctx.moveTo(toPx(0), toPy(pStar));
+        for (let q = 0; q <= qStar * progress; q += 0.05) ctx.lineTo(toPx(q), toPy(demand(q)));
+        ctx.lineTo(toPx(qStar * progress), toPy(pStar));
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(16,185,129,0.2)';
+        ctx.beginPath();
+        ctx.moveTo(toPx(0), toPy(pStar));
+        for (let q = 0; q <= qStar * progress; q += 0.05) ctx.lineTo(toPx(q), toPy(supply(q)));
+        ctx.lineTo(toPx(qStar * progress), toPy(pStar));
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.strokeStyle = '#ec4899';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        for (let q = 0; q <= 7 * progress; q += 0.05) {
+          const x = toPx(q);
+          const y = toPy(demand(q));
+          if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        
+        ctx.strokeStyle = '#10b981';
+        ctx.shadowColor = '#10b981';
+        ctx.beginPath();
+        for (let q = 0; q <= 7 * progress; q += 0.05) {
+          const x = toPx(q);
+          const y = toPy(supply(q));
+          if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        drawLegend(ctx, [{ color: '#ec4899', label: 'Demanda' }, { color: '#10b981', label: 'Oferta' }]);
+      }
+
+      if (type === 'chemistry') {
+        const chart = createChart(width, height, { xMin: 0, xMax: 6.5, yMin: 0, yMax: 4.4 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 't', yLabel: '[A]' });
+        const c = (t) => 4 * Math.exp(-0.45 * t);
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        for (let t = 0; t <= 6.2 * progress; t += 0.04) {
+          const x = chart.mapX(t);
+          const y = chart.mapY(c(t));
+          if (t === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        ctx.fillStyle = 'rgba(245,158,11,0.2)';
+        ctx.beginPath();
+        ctx.moveTo(chart.mapX(0), chart.mapY(0));
+        for (let t = 0; t <= 6.2 * progress; t += 0.04) ctx.lineTo(chart.mapX(t), chart.mapY(c(t)));
+        ctx.lineTo(chart.mapX(6.2 * progress), chart.mapY(0));
+        ctx.closePath();
+        ctx.fill();
+        drawLegend(ctx, [{ color: '#f59e0b', label: 'Concentración' }]);
+      }
+
+      if (type === 'work') {
+        const chart = createChart(width, height, { xMin: 0, xMax: 5.8, yMin: 0, yMax: 4.4 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 'x', yLabel: 'F' });
+        const force = (x) => 0.5 + 0.65 * x;
+        ctx.fillStyle = 'rgba(6,182,212,0.2)';
+        ctx.beginPath();
+        ctx.moveTo(chart.mapX(0), chart.mapY(0));
+        for (let x = 0; x <= 5.5 * progress; x += 0.05) ctx.lineTo(chart.mapX(x), chart.mapY(force(x)));
+        ctx.lineTo(chart.mapX(5.5 * progress), chart.mapY(0));
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        for (let x = 0; x <= 5.5 * progress; x += 0.05) {
+          const px = chart.mapX(x);
+          const py = chart.mapY(force(x));
+          if (x === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        drawLegend(ctx, [{ color: '#06b6d4', label: 'Fuerza F(x)' }, { color: '#67e8f9', label: 'Trabajo' }]);
+      }
+    }
+
+    const graphRegistry = {
+      'substitution-basic': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -6, xMax: 6, yMin: -5.5, yMax: 5.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p1 = plotFunction(ctx, chart, (x) => 2 * x * Math.cos(x * x), { progress, color: '#ec4899', glow: '#ec4899' });
+        const p2 = plotFunction(ctx, chart, (x) => Math.sin(x * x), { progress, color: '#06b6d4', dashed: true, glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'Integrando' }, { color: '#06b6d4', label: 'Antiderivada', dashed: true }]);
+        drawFocusDot(ctx, p1, '#ec4899');
+        drawFocusDot(ctx, p2, '#06b6d4');
+      },
+      'ftc-area': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: 0, xMax: 4.5, yMin: 0, yMax: 10.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const f = (x) => x * x;
+        fillArea(ctx, chart, f, 1, 1 + 2 * progress, { color: 'rgba(99,102,241,0.35)' });
+        const point = plotFunction(ctx, chart, f, { progress, color: '#818cf8', glow: '#818cf8' });
+        drawLegend(ctx, [{ color: '#818cf8', label: 'Curva y = x²' }, { color: '#8b5cf6', label: 'Área integrada' }]);
+        drawFocusDot(ctx, point, '#818cf8');
+      },
+      'ftc-accumulation': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: 0, xMax: 4.5, yMin: 0, yMax: 28 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 'x', yLabel: 'A' });
+        plotFunction(ctx, chart, (x) => (x * x * x) / 3, { progress, color: '#10b981', glow: '#34d399' });
+        drawLegend(ctx, [{ color: '#10b981', label: 'Área acumulada A(x)' }]);
+      },
+      'riemann': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -1, xMax: 7, yMin: -1.2, yMax: 2.8 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const fn = (x) => Math.sin(x) + 1.2;
+        drawRects(ctx, chart, fn, 0, Math.PI, Math.max(1, Math.floor(progress * 16)));
+        const point = plotFunction(ctx, chart, fn, { progress, color: '#ec4899', glow: '#ec4899' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'Curva' }, { color: '#10b981', label: 'Rectángulos' }]);
+        drawFocusDot(ctx, point, '#ec4899');
+      },
+      'even-odd': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -3.5, xMax: 3.5, yMin: -3, yMax: 5.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const pEven = plotFunction(ctx, chart, (x) => 0.4 * x * x, { progress, color: '#10b981', glow: '#34d399' });
+        const pOdd = plotFunction(ctx, chart, (x) => 0.7 * x, { progress, color: '#f59e0b', dashed: true, glow: '#f59e0b' });
+        drawLegend(ctx, [{ color: '#10b981', label: 'Función par' }, { color: '#f59e0b', label: 'Función impar', dashed: true }]);
+        drawFocusDot(ctx, pEven, '#10b981');
+        drawFocusDot(ctx, pOdd, '#f59e0b');
+      },
+      'sub-exp': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -2.2, xMax: 2.2, yMin: -1.2, yMax: 9.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p1 = plotFunction(ctx, chart, (x) => x * x * Math.exp((x * x * x) / 8), { progress, color: '#ec4899', glow: '#ec4899' });
+        const p2 = plotFunction(ctx, chart, (x) => Math.exp((x * x * x) / 8) / 3, { progress, color: '#06b6d4', dashed: true, glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'Integrando' }, { color: '#06b6d4', label: 'Resultado', dashed: true }]);
+        drawFocusDot(ctx, p1, '#ec4899');
+        drawFocusDot(ctx, p2, '#06b6d4');
+      },
+      'sub-def': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -1, xMax: 3, yMin: -0.5, yMax: 7.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const fn = (x) => x * Math.sqrt(x * x + 1);
+        fillArea(ctx, chart, fn, 0, 2 * progress, { color: 'rgba(99,102,241,0.3)' });
+        const p = plotFunction(ctx, chart, fn, { progress, color: '#6366f1', glow: '#818cf8' });
+        drawLegend(ctx, [{ color: '#6366f1', label: 'x√(x² + 1)' }]);
+        drawFocusDot(ctx, p, '#6366f1');
+      },
+      'parts-basic': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -3, xMax: 3, yMin: -5, yMax: 9 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p1 = plotFunction(ctx, chart, (x) => x * Math.exp(x / 2), { progress, color: '#ec4899', glow: '#ec4899' });
+        const p2 = plotFunction(ctx, chart, (x) => Math.exp(x / 2) * (x - 1), { progress, color: '#10b981', dashed: true, glow: '#34d399' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'x·e^x' }, { color: '#10b981', label: 'e^x(x-1)', dashed: true }]);
+        drawFocusDot(ctx, p1, '#ec4899');
+        drawFocusDot(ctx, p2, '#10b981');
+      },
+      'parts-ln': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: 0.2, xMax: 4.6, yMin: -2.5, yMax: 3.6 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true, xLabel: 'x', yLabel: 'y' });
+        plotFunction(ctx, chart, (x) => Math.log(x), { progress, color: '#f59e0b', glow: '#f59e0b' });
+        plotFunction(ctx, chart, (x) => x * (Math.log(x) - 1), { progress, color: '#06b6d4', glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#f59e0b', label: 'ln(x)' }, { color: '#06b6d4', label: 'x(ln x - 1)' }]);
+      },
+      'parts-double': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -2.5, xMax: 2.5, yMin: -2.5, yMax: 11 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p1 = plotFunction(ctx, chart, (x) => x * x * Math.exp(x / 2), { progress, color: '#ec4899', glow: '#ec4899' });
+        const p2 = plotFunction(ctx, chart, (x) => Math.exp(x / 2) * (x * x - 2 * x + 2), { progress, color: '#06b6d4', dashed: true, glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'x²·e^x' }, { color: '#06b6d4', label: 'Resultado', dashed: true }]);
+        drawFocusDot(ctx, p1, '#ec4899');
+        drawFocusDot(ctx, p2, '#06b6d4');
+      },
+      'sin-cube': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -Math.PI, xMax: Math.PI, yMin: -1.2, yMax: 1.2 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p = plotFunction(ctx, chart, (x) => Math.sin(x) ** 3, { progress, color: '#ec4899', glow: '#ec4899' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'sin³(x)' }]);
+        drawFocusDot(ctx, p, '#ec4899');
+      },
+      'sin-square': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -1, xMax: Math.PI * 1.2, yMin: -0.1, yMax: 1.2 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        fillArea(ctx, chart, (x) => Math.sin(x) ** 2, 0, Math.PI * progress, { color: 'rgba(16,185,129,0.22)' });
+        const p = plotFunction(ctx, chart, (x) => Math.sin(x) ** 2, { progress, color: '#10b981', glow: '#34d399' });
+        drawLegend(ctx, [{ color: '#10b981', label: 'sin²(x)' }]);
+        drawFocusDot(ctx, p, '#10b981');
+      },
+      'trig-sub': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -1.95, xMax: 1.95, yMin: 0, yMax: 3.2 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p = plotFunction(ctx, chart, (x) => 1 / Math.sqrt(Math.max(0.001, 4 - x * x)), { progress, color: '#f59e0b', glow: '#f59e0b' });
+        drawLegend(ctx, [{ color: '#f59e0b', label: '1 / √(4 - x²)' }]);
+        drawFocusDot(ctx, p, '#f59e0b');
+      },
+      'triangle': (canvas) => drawTriangle(canvas),
+      'partial-original': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -5, xMax: 5, yMin: -4.5, yMax: 4.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        [-2, 2].forEach((v) => {
+          const px = chart.mapX(v);
+          ctx.strokeStyle = 'rgba(239,68,68,0.6)';
+          ctx.setLineDash([6, 6]);
+          ctx.beginPath();
+          ctx.moveTo(px, 0);
+          ctx.lineTo(px, height);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+        const p = plotFunction(ctx, chart, (x) => (3 * x + 5) / (x * x - 4), { progress, color: '#ec4899', skip: (x) => Math.abs(x - 2) < 0.08 || Math.abs(x + 2) < 0.08, glow: '#ec4899' });
+        drawLegend(ctx, [{ color: '#ec4899', label: 'Función original' }]);
+        drawFocusDot(ctx, p, '#ec4899');
+      },
+      'partial-decomp': (canvas, progress) => {
+        const { ctx, width, height } = prepareCanvas(canvas, 320);
+        paintGraphSurface(ctx, width, height);
+        const chart = createChart(width, height, { xMin: -5, xMax: 5, yMin: -4.5, yMax: 4.5 });
+        drawGrid(ctx, chart);
+        drawAxes(ctx, chart, { labels: true });
+        const p = plotFunction(ctx, chart, (x) => 11 / (4 * (x - 2)) + 1 / (4 * (x + 2)), { progress, color: '#06b6d4', skip: (x) => Math.abs(x - 2) < 0.08 || Math.abs(x + 2) < 0.08, glow: '#22d3ee' });
+        drawLegend(ctx, [{ color: '#06b6d4', label: 'Descomposición parcial' }]);
+        drawFocusDot(ctx, p, '#06b6d4');
+      },
+      'physics': (canvas, progress) => drawApplicationGraph(canvas, 'physics', progress),
+      'economy': (canvas, progress) => drawApplicationGraph(canvas, 'economy', progress),
+      'chemistry': (canvas, progress) => drawApplicationGraph(canvas, 'chemistry', progress),
+      'work': (canvas, progress) => drawApplicationGraph(canvas, 'work', progress)
+    };
+
+    const runningAnimations = new Map();
+
+    function animateGraph(canvas) {
+      const type = canvas.dataset.graph;
+      const drawer = graphRegistry[type];
+      if (!drawer) return;
+      cancelAnimationFrame(runningAnimations.get(canvas));
+      const duration = type === 'triangle' ? 1 : 1400;
+      const start = performance.now();
+      function frame(now) {
+        const progress = duration === 1 ? 1 : Math.min(1, (now - start) / duration);
+        drawer(canvas, progress);
+        if (progress < 1) {
+          runningAnimations.set(canvas, requestAnimationFrame(frame));
+        }
+      }
+      runningAnimations.set(canvas, requestAnimationFrame(frame));
+    }
+
+    let currentFunction = 'x2';
+    let a = 0;
+    let b = 2;
+
+    function fnByKey(key) {
+      switch (key) {
+        case 'sin': return (x) => Math.sin(x);
+        case 'exp': return (x) => Math.exp(x / 2) - 1;
+        case 'linear': return (x) => 2 * x + 1;
+        default: return (x) => x * x;
+      }
+    }
+
+    function drawInteractiveCanvas() {
+      const canvas = document.getElementById('interactiveCanvas');
+      if (!canvas) return;
+      const { ctx, width, height } = prepareCanvas(canvas);
+      paintGraphSurface(ctx, width, height);
+
+      const fn = fnByKey(currentFunction);
+      const start = Math.min(a, b);
+      const end = Math.max(a, b);
+      const signedArea = riemannApprox(fn, a, b, 260);
+      const samplePoints = [-3, -2, -1, 0, 1, 2, 3];
+      const values = samplePoints.map(fn).concat([fn(start), fn(end), 0]);
+      const yMin = Math.min(...values) - 1;
+      const yMax = Math.max(...values) + 1;
+      const chart = createChart(width, height, { xMin: -3, xMax: 3, yMin, yMax });
+      drawGrid(ctx, chart);
+      drawAxes(ctx, chart, { labels: true });
+
+      ctx.fillStyle = signedArea >= 0 ? 'rgba(99,102,241,0.35)' : 'rgba(239,68,68,0.3)';
+      fillArea(ctx, chart, fn, start, end, { color: signedArea >= 0 ? 'rgba(99,102,241,0.35)' : 'rgba(239,68,68,0.3)' });
+      plotFunction(ctx, chart, fn, { progress: 1, color: '#6366f1', glow: '#818cf8' });
+
+      [a, b].forEach((value) => {
+        const x = chart.mapX(value);
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(x, chart.padding.top);
+        ctx.lineTo(x, chart.height - chart.padding.bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 14px JetBrains Mono';
+      ctx.fillText('a=' + a.toFixed(1), chart.mapX(a) - 20, height - 14);
+      ctx.fillText('b=' + b.toFixed(1), chart.mapX(b) - 20, height - 14);
+      document.getElementById('areaValue').textContent = signedArea.toFixed(3);
+      document.getElementById('integralResult').textContent = signedArea.toFixed(4);
+      document.getElementById('resultBox').classList.toggle('error', signedArea < 0);
+    }
+
+    document.getElementById('functionSelect')?.addEventListener('change', (e) => {
+      currentFunction = e.target.value;
+      drawInteractiveCanvas();
+    });
+
+    document.getElementById('aSlider')?.addEventListener('input', (e) => {
+      a = parseFloat(e.target.value);
+      document.getElementById('aValue').textContent = a.toFixed(1);
+      drawInteractiveCanvas();
+    });
+
+    document.getElementById('bSlider')?.addEventListener('input', (e) => {
+      b = parseFloat(e.target.value);
+      document.getElementById('bValue').textContent = b.toFixed(1);
+      drawInteractiveCanvas();
+    });
+
+    function setupRevealAndGraphs() {
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            const canvas = entry.target.matches('canvas') ? entry.target : entry.target.querySelector('canvas[data-graph]');
+            if (canvas) animateGraph(canvas);
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+      document.querySelectorAll('canvas[data-graph]').forEach((canvas) => observer.observe(canvas));
+    }
+
+    function redrawAllGraphs() {
+      document.querySelectorAll('canvas[data-graph]').forEach((canvas) => animateGraph(canvas));
+      drawInteractiveCanvas();
+    }
+
+    window.addEventListener('load', () => {
+      document.getElementById('aValue').textContent = a.toFixed(1);
+      document.getElementById('bValue').textContent = b.toFixed(1);
+      drawInteractiveCanvas();
+      setupRevealAndGraphs();
+    });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(window.resizeTimer);
+      window.resizeTimer = setTimeout(redrawAllGraphs, 250);
+    });
+  </script>
+</body>
+</html>
